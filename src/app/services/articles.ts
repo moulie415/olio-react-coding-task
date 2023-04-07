@@ -98,10 +98,10 @@ export interface Article {
 
 export const articlesApi = createApi({
   reducerPath: 'articlesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://s3-eu-west-1.amazonaws.com/olio-staging-images/developer/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
   endpoints: (builder) => ({
     listArticles: builder.query<Article, void>({
-      query: () => `test-articles-v4.json`,
+      query: () => 'test-articles-v4.json'
     }),
   }),
 })
