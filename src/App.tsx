@@ -2,8 +2,13 @@ import React from 'react';
 import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import './App.css';
+import { useListArticlesQuery } from './app/services/articles';
 
 function App() {
+  const {data} = useListArticlesQuery();
+
+  console.log(data)
+  
   return (
     <div className="App">
       <header className="App-header">
