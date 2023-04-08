@@ -3,55 +3,72 @@ import logo from './logo.svg';
 import {Counter} from './features/counter/Counter';
 import './App.css';
 import {useListArticlesQuery} from './app/services/articles';
+import {
+  Avatar,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  CircularProgress,
+  IconButton,
+  Typography,
+} from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function App() {
-  const {data} = useListArticlesQuery();
-
-  console.log(data);
+  const {data, isLoading, isError, error, refetch} = useListArticlesQuery();
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer">
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer">
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer">
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer">
-            React Redux
-          </a>
-        </span>
-      </header>
+    <div>
+      <CircularProgress />
+      {data &&
+        data.length &&
+        data.map(article => {
+          console.log(article);
+          return (
+            <Card sx={{maxWidth: 345}}>
+              <CardHeader
+                avatar={
+                  <Avatar
+                    src={article.user.current_avatar.small}
+                    sx={{bgcolor: 'purple'}}
+                    aria-label="recipe">
+                    {article.user.first_name.charAt(0)}
+                  </Avatar>
+                }
+                action={
+                  <IconButton aria-label="settings">
+                    <MoreVertIcon />
+                  </IconButton>
+                }
+                title={article.title}
+                subheader="September 14, 2016"
+              />
+              <CardMedia
+                component="img"
+                height="194"
+                image={article.photos[0].files.medium}
+                alt="Paella dish"
+              />
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  {article.description}
+                </Typography>
+              </CardContent>
+              <CardActions disableSpacing>
+                <IconButton aria-label="add to favorites">
+                  <FavoriteIcon />
+                </IconButton>
+                <IconButton aria-label="share">
+                  <ShareIcon />
+                </IconButton>
+              </CardActions>
+            </Card>
+          );
+        })}
     </div>
   );
 }

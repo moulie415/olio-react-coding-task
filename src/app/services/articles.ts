@@ -100,7 +100,7 @@ export const articlesApi = createApi({
   reducerPath: 'articlesApi',
   baseQuery: fetchBaseQuery({baseUrl: process.env.REACT_APP_BASE_URL}),
   endpoints: builder => ({
-    listArticles: builder.query<Article, void>({
+    listArticles: builder.query<Article[], void>({
       query: () => 'test-articles-v4.json',
     }),
   }),

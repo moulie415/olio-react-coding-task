@@ -33,5 +33,7 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
+    'import/extensions': 'off',
+    'import/no-extraneous-dependencies': 'off'
   },
 };
