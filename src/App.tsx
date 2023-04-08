@@ -17,6 +17,7 @@ import {
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import moment from 'moment';
 
 function App() {
   const {data, isLoading, isError, error, refetch} = useListArticlesQuery();
@@ -45,7 +46,7 @@ function App() {
                   </IconButton>
                 }
                 title={article.title}
-                subheader="September 14, 2016"
+                subheader={moment(article.created_at).format('MMMM Do YYYY')}
               />
               <CardMedia
                 component="img"
