@@ -5,16 +5,29 @@ import {store} from './app/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
+import {createTheme} from '@mui/material/styles';
+import {ThemeProvider} from '@mui/material';
+import colors from './colors';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: colors.primary,
+    },
+  },
+});
+
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
+  // <React.StrictMode>
+  <Provider store={store}>
+    <ThemeProvider theme={theme}>
       <App />
-    </Provider>
-  </React.StrictMode>,
+    </ThemeProvider>
+  </Provider>,
+  // </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

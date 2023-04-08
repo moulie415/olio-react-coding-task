@@ -1,14 +1,15 @@
-import { Article } from "../../app/services/articles";
-
+import {Article} from '../../app/services/articles';
 
 describe('GET articles', () => {
   test('articles endpoint', async () => {
-    const response = await fetch(process.env.REACT_APP_BASE_URL + 'test-articles-v4.json' || '');
-    
-      expect(response.status).toBe(200);
-    
+    const response = await fetch(
+      process.env.REACT_APP_BASE_URL + 'test-articles-v4.json' || '',
+    );
+
+    expect(response.status).toBe(200);
+
     const data: Article[] = await response.json();
- 
+
     // Check that the data is an array
     expect(Array.isArray(data)).toBe(true);
 
@@ -21,5 +22,5 @@ describe('GET articles', () => {
       expect(article).toHaveProperty('updated_at');
       expect(article).toHaveProperty('status');
     });
-  })
-})
+  });
+});
