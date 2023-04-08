@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 export interface User {
   id: number;
@@ -12,14 +12,14 @@ export interface User {
   location: {
     latitude: number;
     longitude: number;
-  }
+  };
   rating: {
     rating: number;
     number: number;
-  },
+  };
   verifications: {
-  method: string
-  }[]
+    method: string;
+  }[];
 }
 
 export interface Article {
@@ -37,73 +37,73 @@ export interface Article {
     distance: number;
     town: string;
     country: string;
-    },
-    collection_notes: string;
-    value: {
+  };
+  collection_notes: string;
+  value: {
     price: number;
     currency: string;
     payment_type: string;
-    },
-    created_at: string;
-    updated_at: string;
-    status: string;
-    expiry: string;
-    reactions: {
+  };
+  created_at: string;
+  updated_at: string;
+  status: string;
+  expiry: string;
+  reactions: {
     likes: number;
     by_user: boolean;
     views: number;
     impressions: number;
-    },
-    is_owner: boolean;
-    conversations: {
+  };
+  is_owner: boolean;
+  conversations: {
     linked: number;
     request_id: number | null;
-    },
-    photos: {
-      uid: string;
-      files: {
-        original: string;
-        large: string;
-        medium: string;
-        small: string;
-      },
-      dimensions: {
-        width: number;
-        height: number;
-      }
-    }[];
-    images: {
+  };
+  photos: {
     uid: string;
-      files: {
+    files: {
       original: string;
       large: string;
       medium: string;
       small: string;
-      },
-      dimensions: {
+    };
+    dimensions: {
       width: number;
       height: number;
-      }
-    }[]
-    user: User;
-    first: boolean;
-    last_listed: string;
-    pickups: {
-      multiple: boolean;
-      users: User[];
-      items: number;
-    },
-    veteran_delay: number;
+    };
+  }[];
+  images: {
+    uid: string;
+    files: {
+      original: string;
+      large: string;
+      medium: string;
+      small: string;
+    };
+    dimensions: {
+      width: number;
+      height: number;
+    };
+  }[];
+  user: User;
+  first: boolean;
+  last_listed: string;
+  pickups: {
+    multiple: boolean;
+    users: User[];
+    items: number;
+  };
+  veteran_delay: number;
 }
 
 export const articlesApi = createApi({
   reducerPath: 'articlesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
-  endpoints: (builder) => ({
+  baseQuery: fetchBaseQuery({baseUrl: process.env.REACT_APP_BASE_URL}),
+  endpoints: builder => ({
     listArticles: builder.query<Article, void>({
-      query: () => 'test-articles-v4.json'
+      query: () => 'test-articles-v4.json',
     }),
   }),
-})
+});
 
-export const { useListArticlesQuery } = articlesApi
+export const {useListArticlesQuery} = articlesApi;
