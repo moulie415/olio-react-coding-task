@@ -23,7 +23,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import moment from 'moment';
-import GoogleMapReact from 'google-map-react';
+import GoogleMapReact from 'google-maps-react-markers';
 import PlaceIcon from '@mui/icons-material/Place';
 import colors from './colors';
 
@@ -123,10 +123,8 @@ function App() {
           </Grid>
           <Grid item sm={6} style={{maxHeight: '91vh'}}>
             <GoogleMapReact
-              bootstrapURLKeys={{
-                key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '',
-              }}
-              onGoogleApiLoaded={({map, maps}) => {
+              apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ''}
+              onGoogleApiLoaded={({map, maps}: {map: any; maps: any}) => {
                 setGoogleMaps(maps);
                 setGoogleMap(map);
               }}
@@ -138,6 +136,7 @@ function App() {
               {data.map(article => {
                 return (
                   <IconButton
+                    key={article.id}
                     // @ts-ignore
                     lat={article.location.latitude}
                     lng={article.location.longitude}
