@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import logo from './logo.svg';
 import {Counter} from './features/counter/Counter';
 import './App.css';
@@ -24,9 +24,27 @@ import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import moment from 'moment';
 import GoogleMapReact from 'google-map-react';
+import PlaceIcon from '@mui/icons-material/Place';
+import colors from './colors';
 
 function App() {
   const {data, isLoading, error, refetch} = useListArticlesQuery();
+
+  const [googleMaps, setGoogleMaps] = useState<any>();
+  const [googleMap, setGoogleMap] = useState<any>();
+
+  useEffect(() => {
+    if (data && data.length && googleMaps && googleMap) {
+      const bounds = new googleMaps.LatLngBounds();
+      data.forEach(article => {
+        bounds.extend({
+          lat: article.location.latitude,
+          lng: article.location.longitude,
+        });
+      });
+      googleMap.fitBounds(bounds);
+    }
+  }, [data, googleMaps, googleMap]);
 
   return (
     <div>
@@ -58,7 +76,9 @@ function App() {
             }}>
             {data.map(article => {
               return (
-                <Card style={{maxWidth: 400, margin: '20px auto'}}>
+                <Card
+                  key={article.id}
+                  style={{maxWidth: 400, margin: '20px auto'}}>
                   <CardHeader
                     avatar={
                       <Avatar
@@ -103,12 +123,32 @@ function App() {
           </Grid>
           <Grid item sm={6} style={{maxHeight: '91vh'}}>
             <GoogleMapReact
-              bootstrapURLKeys={{key: ''}}
+              bootstrapURLKeys={{
+                key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '',
+              }}
+              onGoogleApiLoaded={({map, maps}) => {
+                setGoogleMaps(maps);
+                setGoogleMap(map);
+              }}
               defaultCenter={{
                 lat: 10.99835602,
                 lng: 77.01502627,
               }}
-              defaultZoom={11}></GoogleMapReact>
+              defaultZoom={11}>
+              {data.map(article => {
+                return (
+                  <IconButton
+                    // @ts-ignore
+                    lat={article.location.latitude}
+                    lng={article.location.longitude}
+                    color="secondary"
+                    aria-label="marker"
+                    component="label">
+                    <PlaceIcon fontSize="large" color="secondary" />
+                  </IconButton>
+                );
+              })}
+            </GoogleMapReact>
           </Grid>
         </Grid>
       ) : (
