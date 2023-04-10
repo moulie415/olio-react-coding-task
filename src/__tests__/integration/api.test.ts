@@ -1,7 +1,7 @@
-import {Article} from '../../services/api';
+import Article from '../../types/Article';
 
-describe('GET articles', () => {
-  test('articles endpoint', async () => {
+describe('api', () => {
+  test('articles endpoint responds with an array of articles', async () => {
     const response = await fetch(
       process.env.REACT_APP_BASE_URL + 'test-articles-v4.json' || '',
     );
@@ -19,8 +19,9 @@ describe('GET articles', () => {
       expect(article).toHaveProperty('title');
       expect(article).toHaveProperty('description');
       expect(article).toHaveProperty('created_at');
-      expect(article).toHaveProperty('updated_at');
-      expect(article).toHaveProperty('status');
+      expect(article).toHaveProperty('user');
+      expect(article.user).toHaveProperty('first_name');
+      expect(article).toHaveProperty('photos');
     });
   });
 });

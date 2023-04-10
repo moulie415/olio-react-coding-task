@@ -1,6 +1,6 @@
 import React from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
-import {Article, useListArticlesQuery} from '../../../services/api';
+import {useListArticlesQuery} from '../../../services/api';
 import {
   Grid,
   useMediaQuery,
@@ -13,6 +13,7 @@ import moment from 'moment';
 import GoogleMapReact from 'google-maps-react-markers';
 import PlaceIcon from '@mui/icons-material/Place';
 import AbsoluteLoader from '../../shared/AbsoluteLoader/AbsoluteLoader';
+import Article from '../../../types/Article';
 
 const ArticleView = () => {
   const {id} = useParams();

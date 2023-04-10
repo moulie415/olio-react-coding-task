@@ -1,5 +1,5 @@
 import React from 'react';
-import {Article} from '../../../services/api';
+import Article from '../../../types/Article';
 import {useAppDispatch, useAppSelector} from '../../../hooks';
 import {
   Avatar,
@@ -112,7 +112,7 @@ const ArticlesList: React.FC<{
                 <CardMedia
                   component="img"
                   height="194"
-                  image={article.photos[0].files.medium}
+                  image={article.photos[0]?.files.medium}
                   alt={article.title}
                 />
                 <CardContent>
