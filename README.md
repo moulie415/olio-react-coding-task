@@ -24,7 +24,7 @@ npm start
 
 ## Tests
 
-You can also run the test using this command
+You can also run the tests using this command
 
 ```sh
 npm test
