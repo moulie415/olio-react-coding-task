@@ -1,18 +1,18 @@
 import React from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
-import {Article, useListArticlesQuery} from '../../services/articles';
+import {Article, useListArticlesQuery} from '../../../services/articles';
 import {
-  CircularProgress,
   Grid,
   useMediaQuery,
   Typography,
   Avatar,
   IconButton,
 } from '@mui/material';
-import colors from '../../colors';
+import colors from '../../../colors';
 import moment from 'moment';
 import GoogleMapReact from 'google-maps-react-markers';
 import PlaceIcon from '@mui/icons-material/Place';
+import AbsoluteLoader from '../../shared/AbsoluteLoader/AbsoluteLoader';
 
 const ArticleView = () => {
   const {id} = useParams();
@@ -26,36 +26,25 @@ const ArticleView = () => {
     return null;
   }
   if (isLoading) {
-    return (
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          alignItems: 'center',
-          justifyContent: 'center',
-          display: 'flex',
-        }}>
-        <CircularProgress />
-      </div>
-    );
+    return <AbsoluteLoader />;
   }
 
   return (
     <Grid container>
-      <Grid item sm={6} xs={12} style={{backgroundColor: '#D3D3D3'}}>
+      <Grid item sm={6} xs={12} style={{backgroundColor: colors.offWhite}}>
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            height: matches ? '91vh' : 'auto',
           }}>
           <img
             src={article?.photos[0]?.files.large}
-            style={{maxWidth: '100%', objectFit: 'cover'}}
+            style={{
+              maxWidth: '100%',
+              height: matches ? '91vh' : '40vh',
+              objectFit: 'contain',
+            }}
           />
         </div>
       </Grid>
@@ -63,11 +52,12 @@ const ArticleView = () => {
         {article && (
           <div
             style={{
-              padding: 20,
+              padding: '0 20px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
-              height: matches ? '91vh' : undefined,
+              minHeight: '91vh',
+              // height: matches ? '90vh' : undefined,
             }}>
             <div style={{display: 'flex', alignItems: 'center'}}>
               <Avatar
