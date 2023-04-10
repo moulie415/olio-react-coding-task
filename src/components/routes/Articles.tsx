@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useListArticlesQuery} from '../../services/articles';
 import {
   Avatar,
@@ -22,6 +22,7 @@ import {markAsRead, markAsUnread} from '../../slices/articles';
 import sortArticles from '../../helpers/sortArticles';
 import RestoreIcon from '@mui/icons-material/Restore';
 import {useNavigate} from 'react-router-dom';
+import colors from '../../colors';
 
 function App() {
   const {data, isLoading, error, refetch} = useListArticlesQuery();
@@ -78,7 +79,7 @@ function App() {
                     onClick={() => navigate(`/article/${article.id}`)}
                     sx={{
                       ':hover': {
-                        boxShadow: 5, // theme.shadows[20]
+                        boxShadow: 5,
                       },
                     }}
                     style={{
@@ -107,7 +108,8 @@ function App() {
                         }}>
                         <div style={{textAlign: 'center'}}>
                           <IconButton
-                            onClick={() => {
+                            onClick={e => {
+                              e.stopPropagation();
                               dispatch(markAsUnread(article.id));
                             }}>
                             <RestoreIcon
@@ -121,7 +123,7 @@ function App() {
                       avatar={
                         <Avatar
                           src={article.user.current_avatar.small}
-                          sx={{bgcolor: 'purple'}}
+                          style={{backgroundColor: colors.purple}}
                           aria-label="user avatar">
                           {article.user.first_name.charAt(0)}
                         </Avatar>
@@ -149,7 +151,8 @@ function App() {
                     </CardContent>
                     <CardActions disableSpacing>
                       <IconButton
-                        onClick={() => {
+                        onClick={e => {
+                          e.stopPropagation();
                           googleMap.setCenter({
                             lat: article.location.latitude,
                             lng: article.location.longitude,
@@ -161,7 +164,8 @@ function App() {
                         <PlaceIcon />
                       </IconButton>
                       <Button
-                        onClick={() => {
+                        onClick={e => {
+                          e.stopPropagation();
                           dispatch(markAsRead(article.id));
                         }}
                         size="small"

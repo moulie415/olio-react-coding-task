@@ -11,12 +11,7 @@ function App() {
       <AppBar position="sticky">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <img
-              src={logo}
-              style={{height: 30}}
-              className="App-logo"
-              alt="logo"
-            />
+            <img src={logo} style={{height: 30}} alt="logo" />
           </Toolbar>
         </Container>
       </AppBar>
