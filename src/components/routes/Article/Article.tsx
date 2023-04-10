@@ -40,6 +40,7 @@ const ArticleView = () => {
           }}>
           <img
             src={article?.photos[0]?.files.large}
+            alt={article?.title}
             style={{
               maxWidth: '100%',
               height: matches ? '91vh' : '40vh',
@@ -63,7 +64,7 @@ const ArticleView = () => {
               <Avatar
                 src={article.user.current_avatar.small}
                 style={{backgroundColor: colors.purple, marginRight: 20}}
-                aria-label="user avatar">
+                alt={article.user.first_name}>
                 {article.user.first_name.charAt(0)}
               </Avatar>
               <div>

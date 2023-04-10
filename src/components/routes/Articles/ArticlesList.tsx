@@ -97,7 +97,7 @@ const ArticlesList: React.FC<{
                     <Avatar
                       src={article.user.current_avatar.small}
                       style={{backgroundColor: colors.purple}}
-                      aria-label="user avatar">
+                      alt={article.user.first_name}>
                       {article.user.first_name.charAt(0)}
                     </Avatar>
                   }
