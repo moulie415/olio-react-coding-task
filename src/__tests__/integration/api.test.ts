@@ -1,4 +1,4 @@
-import {Article} from '../../app/services/articles';
+import {Article} from '../../services/articles';
 
 describe('GET articles', () => {
   test('articles endpoint', async () => {

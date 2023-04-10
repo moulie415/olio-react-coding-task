@@ -1,8 +1,7 @@
 import React, {useState, useEffect, RefObject} from 'react';
 import logo from './logo.svg';
-import {Counter} from './features/counter/Counter';
 import './App.css';
-import {useListArticlesQuery} from './app/services/articles';
+import {useListArticlesQuery} from './services/articles';
 import {
   AppBar,
   Avatar,
@@ -26,8 +25,8 @@ import GoogleMapReact from 'google-maps-react-markers';
 import PlaceIcon from '@mui/icons-material/Place';
 import colors from './colors';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import {useAppDispatch} from './app/hooks';
-import {markAsRead} from './app/slices/articles';
+import {useAppDispatch} from './hooks';
+import {markAsRead} from './slices/articles';
 
 function App() {
   const {data, isLoading, error, refetch} = useListArticlesQuery();
