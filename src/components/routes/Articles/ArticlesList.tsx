@@ -1,5 +1,5 @@
 import React from 'react';
-import {Article} from '../../../services/articles';
+import {Article} from '../../../services/api';
 import {useAppDispatch, useAppSelector} from '../../../hooks';
 import {
   Avatar,

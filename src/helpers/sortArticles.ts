@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {Article} from '../services/articles';
+import {Article} from '../services/api';
 
 const sortArticles = (
   data: Article[] | undefined,

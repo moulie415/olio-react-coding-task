@@ -1,6 +1,6 @@
 import React from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
-import {Article, useListArticlesQuery} from '../../../services/articles';
+import {Article, useListArticlesQuery} from '../../../services/api';
 import {
   Grid,
   useMediaQuery,

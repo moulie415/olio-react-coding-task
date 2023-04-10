@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useListArticlesQuery} from '../../../services/articles';
+import {useListArticlesQuery} from '../../../services/api';
 import {Grid} from '@mui/material';
 import {useAppSelector} from '../../../hooks';
 import ArticlesList from './ArticlesList';

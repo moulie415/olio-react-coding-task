@@ -1,6 +1,6 @@
 import React from 'react';
 import GoogleMapReact from 'google-maps-react-markers';
-import {Article} from '../../../services/articles';
+import {Article} from '../../../services/api';
 import {useAppSelector} from '../../../hooks';
 import PlaceIcon from '@mui/icons-material/Place';
 import {IconButton} from '@mui/material';

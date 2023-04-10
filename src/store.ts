@@ -1,14 +1,14 @@
 import {configureStore, ThunkAction, Action} from '@reduxjs/toolkit';
 import articlesReducer from './slices/articles';
-import {articlesApi} from './services/articles';
+import {api} from './services/api';
 
 export const store = configureStore({
   reducer: {
     articles: articlesReducer,
-    [articlesApi.reducerPath]: articlesApi.reducer,
+    [api.reducerPath]: api.reducer,
   },
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(articlesApi.middleware),
+    getDefaultMiddleware().concat(api.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

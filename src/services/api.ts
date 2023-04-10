@@ -96,8 +96,8 @@ export interface Article {
   veteran_delay: number;
 }
 
-export const articlesApi = createApi({
-  reducerPath: 'articlesApi',
+export const api = createApi({
+  reducerPath: 'api',
   baseQuery: fetchBaseQuery({baseUrl: process.env.REACT_APP_BASE_URL}),
   endpoints: builder => ({
     listArticles: builder.query<Article[], void>({
@@ -106,4 +106,4 @@ export const articlesApi = createApi({
   }),
 });
 
-export const {useListArticlesQuery} = articlesApi;
+export const {useListArticlesQuery} = api;
