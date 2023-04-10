@@ -47,6 +47,7 @@ const ArticlesList: React.FC<{
           const seen = readArticles[article.id];
           return (
             <div
+              data-testid={article.id}
               style={{padding: 20}}
               ref={ref => (articleRefs[article.id] = ref)}
               key={article.id}>

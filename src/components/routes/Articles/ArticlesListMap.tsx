@@ -5,6 +5,13 @@ import {useAppSelector} from '../../../hooks';
 import PlaceIcon from '@mui/icons-material/Place';
 import {IconButton} from '@mui/material';
 
+const DEFAULT_CENTER = {
+  lng: 0.1276,
+  lat: 51.5072,
+};
+
+const DEFAULT_ZOOM = 11;
+
 const ArticlesListMap: React.FC<{
   setGoogleMaps: (maps: any) => void;
   setGoogleMap: (map: any) => void;
@@ -27,11 +34,8 @@ const ArticlesListMap: React.FC<{
         setGoogleMaps(maps);
         setGoogleMap(map);
       }}
-      defaultCenter={{
-        lat: 10.99835602,
-        lng: 77.01502627,
-      }}
-      defaultZoom={11}>
+      defaultCenter={DEFAULT_CENTER}
+      defaultZoom={DEFAULT_ZOOM}>
       {data &&
         data
           .filter(article => !readArticles[article.id])

@@ -35,6 +35,7 @@ module.exports = {
     ],
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
-    '@typescript-eslint/ban-ts-comment': 'off'
+    '@typescript-eslint/ban-ts-comment': 'off',
+    'jest/no-conditional-expect': 'off'
   },
 };
