@@ -25,8 +25,9 @@ import PlaceIcon from '@mui/icons-material/Place';
 import colors from './colors';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import {useAppDispatch, useAppSelector} from './hooks';
-import {markAsRead} from './slices/articles';
+import {markAsRead, markAsUnread} from './slices/articles';
 import sortArticles from './helpers/sortArticles';
+import RestoreIcon from '@mui/icons-material/Restore';
 
 function App() {
   const {data, isLoading, error, refetch} = useListArticlesQuery();
@@ -94,11 +95,36 @@ function App() {
                     style={{
                       maxWidth: 400,
                       margin: 'auto',
+                      position: 'relative',
                       border:
                         highlightedArticle === article.id
                           ? `solid #00A69C`
                           : undefined,
                     }}>
+                    {seen && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          right: 0,
+                          left: 0,
+                          bottom: 0,
+                          backgroundColor: 'rgba(0,0,0,0.7)',
+                          zIndex: 9,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <div style={{textAlign: 'center'}}>
+                          <IconButton
+                            onClick={() => dispatch(markAsUnread(article.id))}>
+                            <RestoreIcon
+                              style={{color: 'white', fontSize: 70}}
+                            />
+                          </IconButton>
+                        </div>
+                      </div>
+                    )}
                     <CardHeader
                       avatar={
                         <Avatar
