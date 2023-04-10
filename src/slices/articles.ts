@@ -5,7 +5,7 @@ interface ArticlesState {
   readArticles: {[key: number]: boolean};
 }
 
-const initialState = {} as ArticlesState;
+const initialState = {readArticles: {}} as ArticlesState;
 
 const articlesSlice = createSlice({
   name: 'articles',

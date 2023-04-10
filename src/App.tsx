@@ -1,6 +1,5 @@
-import React, {useState, useEffect, RefObject} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import logo from './logo.svg';
-import './App.css';
 import {useListArticlesQuery} from './services/articles';
 import {
   AppBar,
@@ -25,8 +24,9 @@ import GoogleMapReact from 'google-maps-react-markers';
 import PlaceIcon from '@mui/icons-material/Place';
 import colors from './colors';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import {useAppDispatch} from './hooks';
+import {useAppDispatch, useAppSelector} from './hooks';
 import {markAsRead} from './slices/articles';
+import sortArticles from './helpers/sortArticles';
 
 function App() {
   const {data, isLoading, error, refetch} = useListArticlesQuery();
@@ -35,26 +35,30 @@ function App() {
   const [googleMap, setGoogleMap] = useState<any>();
   const [highlightedArticle, setHighlightedArticle] = useState<number>();
 
-  const refs: {[key: number]: HTMLDivElement | null} = {};
+  const articleRefs: {[key: number]: HTMLDivElement | null} = {};
 
   const dispatch = useAppDispatch();
+
+  const {readArticles} = useAppSelector(state => state.articles);
+  const sorted = sortArticles(data, readArticles);
 
   useEffect(() => {
     if (data && data.length && googleMaps && googleMap) {
       const bounds = new googleMaps.LatLngBounds();
       data.forEach(article => {
-        bounds.extend({
-          lat: article.location.latitude,
-          lng: article.location.longitude,
-        });
+        if (!readArticles[article.id]) {
+          bounds.extend({
+            lat: article.location.latitude,
+            lng: article.location.longitude,
+          });
+        }
       });
       googleMap.fitBounds(bounds);
     }
-  }, [data, googleMaps, googleMap]);
-  console.log(highlightedArticle);
+  }, [data, googleMaps, googleMap, readArticles]);
+
   return (
     <div>
-      {/* <Box sx={{flexGrow: 1}}> */}
       <AppBar position="sticky">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
@@ -67,9 +71,8 @@ function App() {
           </Toolbar>
         </Container>
       </AppBar>
-      {/* </Box> */}
 
-      {data && data.length && !isLoading ? (
+      {sorted && sorted.length && !isLoading ? (
         <Grid container>
           <Grid
             item
@@ -80,72 +83,76 @@ function App() {
               maxHeight: '91vh',
               backgroundColor: '#D3D3D3',
             }}>
-            {data.map(article => {
+            {sorted.map(article => {
+              const seen = readArticles[article.id];
               return (
-                <Card
-                  ref={ref => (refs[article.id] = ref)}
-                  key={article.id}
-                  style={{
-                    maxWidth: 400,
-                    margin: '20px auto',
-                    borderWidth: 1,
-                    borderColor: colors.primary,
-                    border:
-                      highlightedArticle === article.id
-                        ? `solid #00A69C`
-                        : undefined,
-                  }}>
-                  <CardHeader
-                    avatar={
-                      <Avatar
-                        src={article.user.current_avatar.small}
-                        sx={{bgcolor: 'purple'}}
-                        aria-label="user avatar">
-                        {article.user.first_name.charAt(0)}
-                      </Avatar>
-                    }
-                    action={
-                      <IconButton aria-label="report">
-                        <FlagOutlinedIcon />
+                <div
+                  style={{padding: 20}}
+                  ref={ref => (articleRefs[article.id] = ref)}
+                  key={article.id}>
+                  <Card
+                    style={{
+                      maxWidth: 400,
+                      margin: 'auto',
+                      border:
+                        highlightedArticle === article.id
+                          ? `solid #00A69C`
+                          : undefined,
+                    }}>
+                    <CardHeader
+                      avatar={
+                        <Avatar
+                          src={article.user.current_avatar.small}
+                          sx={{bgcolor: 'purple'}}
+                          aria-label="user avatar">
+                          {article.user.first_name.charAt(0)}
+                        </Avatar>
+                      }
+                      action={
+                        <IconButton aria-label="report">
+                          <FlagOutlinedIcon />
+                        </IconButton>
+                      }
+                      title={article.title}
+                      subheader={moment(article.created_at).format(
+                        'MMMM Do YYYY',
+                      )}
+                    />
+                    <CardMedia
+                      component="img"
+                      height="194"
+                      image={article.photos[0].files.medium}
+                      alt={article.title}
+                    />
+                    <CardContent>
+                      <Typography variant="body2" color="text.secondary">
+                        {article.description}
+                      </Typography>
+                    </CardContent>
+                    <CardActions disableSpacing>
+                      <IconButton
+                        onClick={() => {
+                          googleMap.setCenter({
+                            lat: article.location.latitude,
+                            lng: article.location.longitude,
+                          });
+                          googleMap.setZoom(15);
+                          setHighlightedArticle(article.id);
+                        }}
+                        aria-label="View on map">
+                        <PlaceIcon />
                       </IconButton>
-                    }
-                    title={article.title}
-                    subheader={moment(article.created_at).format(
-                      'MMMM Do YYYY',
-                    )}
-                  />
-                  <CardMedia
-                    component="img"
-                    height="194"
-                    image={article.photos[0].files.medium}
-                    alt={article.title}
-                  />
-                  <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                      {article.description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions disableSpacing>
-                    <IconButton
-                      onClick={() => {
-                        googleMap.setCenter({
-                          lat: article.location.latitude,
-                          lng: article.location.longitude,
-                        });
-                        googleMap.setZoom(15);
-                        setHighlightedArticle(article.id);
-                      }}
-                      aria-label="View on map">
-                      <PlaceIcon />
-                    </IconButton>
-                    <Button
-                      onClick={() => dispatch(markAsRead(article.id))}
-                      size="small"
-                      color="primary">
-                      Mark as seen
-                    </Button>
-                  </CardActions>
-                </Card>
+                      <Button
+                        onClick={() => {
+                          dispatch(markAsRead(article.id));
+                        }}
+                        size="small"
+                        color="primary">
+                        Mark as seen
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </div>
               );
             })}
           </Grid>
@@ -161,27 +168,30 @@ function App() {
                 lng: 77.01502627,
               }}
               defaultZoom={11}>
-              {data.map(article => {
-                return (
-                  <IconButton
-                    onClick={() => {
-                      refs[article.id]?.scrollIntoView({
-                        behavior: 'smooth',
-                      });
-                      setHighlightedArticle(article.id);
-                    }}
-                    style={{padding: 0}}
-                    key={article.id}
-                    // @ts-ignore
-                    lat={article.location.latitude}
-                    lng={article.location.longitude}
-                    color="secondary"
-                    aria-label="marker"
-                    component="label">
-                    <PlaceIcon fontSize="large" color="secondary" />
-                  </IconButton>
-                );
-              })}
+              {data &&
+                data
+                  .filter(article => !readArticles[article.id])
+                  .map(article => {
+                    return (
+                      <IconButton
+                        onClick={() => {
+                          articleRefs[article.id]?.scrollIntoView({
+                            behavior: 'smooth',
+                          });
+                          setHighlightedArticle(article.id);
+                        }}
+                        style={{padding: 0}}
+                        key={article.id}
+                        // @ts-ignore
+                        lat={article.location.latitude}
+                        lng={article.location.longitude}
+                        color="secondary"
+                        aria-label="marker"
+                        component="label">
+                        <PlaceIcon fontSize="large" color="secondary" />
+                      </IconButton>
+                    );
+                  })}
             </GoogleMapReact>
           </Grid>
         </Grid>
