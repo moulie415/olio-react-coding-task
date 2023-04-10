@@ -8,6 +8,7 @@ import './index.css';
 import {createTheme} from '@mui/material/styles';
 import {ThemeProvider} from '@mui/material';
 import colors from './colors';
+import {BrowserRouter} from 'react-router-dom';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -27,7 +28,9 @@ root.render(
   // <React.StrictMode>
   <Provider store={store}>
     <ThemeProvider theme={theme}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ThemeProvider>
   </Provider>,
   // </React.StrictMode>,
