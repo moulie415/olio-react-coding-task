@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, RefObject} from 'react';
 import logo from './logo.svg';
 import {Counter} from './features/counter/Counter';
 import './App.css';
@@ -7,6 +7,7 @@ import {
   AppBar,
   Avatar,
   Box,
+  Button,
   Card,
   CardActions,
   CardContent,
@@ -19,19 +20,25 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import moment from 'moment';
 import GoogleMapReact from 'google-maps-react-markers';
 import PlaceIcon from '@mui/icons-material/Place';
 import colors from './colors';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import {useAppDispatch} from './app/hooks';
+import {markAsRead} from './app/slices/articles';
 
 function App() {
   const {data, isLoading, error, refetch} = useListArticlesQuery();
 
   const [googleMaps, setGoogleMaps] = useState<any>();
   const [googleMap, setGoogleMap] = useState<any>();
+  const [highlightedArticle, setHighlightedArticle] = useState<number>();
+
+  const refs: {[key: number]: HTMLDivElement | null} = {};
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (data && data.length && googleMaps && googleMap) {
@@ -45,7 +52,7 @@ function App() {
       googleMap.fitBounds(bounds);
     }
   }, [data, googleMaps, googleMap]);
-
+  console.log(highlightedArticle);
   return (
     <div>
       {/* <Box sx={{flexGrow: 1}}> */}
@@ -77,20 +84,30 @@ function App() {
             {data.map(article => {
               return (
                 <Card
+                  ref={ref => (refs[article.id] = ref)}
                   key={article.id}
-                  style={{maxWidth: 400, margin: '20px auto'}}>
+                  style={{
+                    maxWidth: 400,
+                    margin: '20px auto',
+                    borderWidth: 1,
+                    borderColor: colors.primary,
+                    border:
+                      highlightedArticle === article.id
+                        ? `solid #00A69C`
+                        : undefined,
+                  }}>
                   <CardHeader
                     avatar={
                       <Avatar
                         src={article.user.current_avatar.small}
                         sx={{bgcolor: 'purple'}}
-                        aria-label="recipe">
+                        aria-label="user avatar">
                         {article.user.first_name.charAt(0)}
                       </Avatar>
                     }
                     action={
-                      <IconButton aria-label="settings">
-                        <MoreVertIcon />
+                      <IconButton aria-label="report">
+                        <FlagOutlinedIcon />
                       </IconButton>
                     }
                     title={article.title}
@@ -102,7 +119,7 @@ function App() {
                     component="img"
                     height="194"
                     image={article.photos[0].files.medium}
-                    alt="Paella dish"
+                    alt={article.title}
                   />
                   <CardContent>
                     <Typography variant="body2" color="text.secondary">
@@ -110,12 +127,24 @@ function App() {
                     </Typography>
                   </CardContent>
                   <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites">
-                      <FavoriteIcon />
+                    <IconButton
+                      onClick={() => {
+                        googleMap.setCenter({
+                          lat: article.location.latitude,
+                          lng: article.location.longitude,
+                        });
+                        googleMap.setZoom(15);
+                        setHighlightedArticle(article.id);
+                      }}
+                      aria-label="View on map">
+                      <PlaceIcon />
                     </IconButton>
-                    <IconButton aria-label="share">
-                      <ShareIcon />
-                    </IconButton>
+                    <Button
+                      onClick={() => dispatch(markAsRead(article.id))}
+                      size="small"
+                      color="primary">
+                      Mark as seen
+                    </Button>
                   </CardActions>
                 </Card>
               );
@@ -136,6 +165,13 @@ function App() {
               {data.map(article => {
                 return (
                   <IconButton
+                    onClick={() => {
+                      refs[article.id]?.scrollIntoView({
+                        behavior: 'smooth',
+                      });
+                      setHighlightedArticle(article.id);
+                    }}
+                    style={{padding: 0}}
                     key={article.id}
                     // @ts-ignore
                     lat={article.location.latitude}
