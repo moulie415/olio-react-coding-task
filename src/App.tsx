@@ -8,11 +8,11 @@ import Article from './components/routes/Article/Article';
 function App() {
   return (
     <div>
-      <AppBar style={{height: '5vh'}} position="sticky">
+      <AppBar style={{height: '7vh'}} position="sticky">
         <Container maxWidth="xl">
-          <Toolbar disableGutters>
+          <Toolbar style={{minHeight: '7vh'}} disableGutters>
             <Link to="/">
-              <img src={logo} style={{height: 30}} alt="logo" />
+              <img src={logo} style={{height: '4vh'}} alt="logo" />
             </Link>
           </Toolbar>
         </Container>

@@ -47,7 +47,7 @@ function App() {
             xs={12}
             style={{
               overflowY: 'scroll',
-              maxHeight: '95vh',
+              maxHeight: '93vh',
               backgroundColor: colors.offWhite,
             }}>
             <ArticlesList
@@ -58,7 +58,7 @@ function App() {
               googleMap={googleMap}
             />
           </Grid>
-          <Grid item sm={6} style={{maxHeight: '91vh'}}>
+          <Grid item sm={6} style={{maxHeight: '93vh'}}>
             <ArticlesListMap
               setGoogleMap={setGoogleMap}
               setGoogleMaps={setGoogleMaps}
