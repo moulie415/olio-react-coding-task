@@ -46,5 +46,5 @@ There's lots that could be added to this project but I could be working on this 
 - I don't display all the photos on the individual article pages, perhaps if there's more that one photo on an article item we could show them in a carousel like in the OLIO app?
 - The OLIO mobile app has a nice feature where it groups markers into one marker based off there proximity to each other, that functionality would certainly carry over nicely into this project
 - I add the flag button to articles so in future could actually function as a button for flagging inappropriate items
-- I know for some having styling in stylesheets, whilst its not something I prioritise there are some inline styles that could be moved to further neaten things up a bit
+- I know for some having styling in stylesheets is important, whilst its not something I prioritise there are some inline styles that could be moved to further neaten things up a bit
 - In the case that the data fetch fails there's nothing in place to handle that in the ui so we could perhaps show a snack bar when it errors and use the refetch function provided by the useListArticlesQuery hook
