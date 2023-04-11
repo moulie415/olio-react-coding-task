@@ -44,7 +44,7 @@ const ArticleView = () => {
             alt={article?.title}
             style={{
               maxWidth: '100%',
-              height: matches ? '91vh' : '40vh',
+              height: matches ? '95vh' : '40vh',
               objectFit: 'contain',
             }}
           />
@@ -58,7 +58,7 @@ const ArticleView = () => {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
-              minHeight: '91vh',
+              minHeight: '95vh',
               // height: matches ? '90vh' : undefined,
             }}>
             <div style={{display: 'flex', alignItems: 'center'}}>

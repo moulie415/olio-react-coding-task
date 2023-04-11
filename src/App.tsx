@@ -8,7 +8,7 @@ import Article from './components/routes/Article/Article';
 function App() {
   return (
     <div>
-      <AppBar position="sticky">
+      <AppBar style={{height: '5vh'}} position="sticky">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Link to="/">

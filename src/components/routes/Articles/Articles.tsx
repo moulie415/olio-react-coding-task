@@ -47,7 +47,7 @@ function App() {
             xs={12}
             style={{
               overflowY: 'scroll',
-              maxHeight: '91vh',
+              maxHeight: '95vh',
               backgroundColor: colors.offWhite,
             }}>
             <ArticlesList
